@@ -10,13 +10,21 @@ using TodoApp.Models;
 
 namespace TodoApp.Controllers
 {
+    //コントローラクラスを作る前にビルド
+    //名前はコントローラで終わる
+    //Controllerを継承
     public class TodoesController : Controller
     {
+        //データベースの操作を行う
         private TodoesContext db = new TodoesContext();
 
         // GET: Todoes
+        // ブラウザからTodoesにアクセスがあると呼ばれる
+        // アクションメソッド
         public ActionResult Index()
         {
+            //TodoのListを与える
+            //ViewResult アクションメソッドに対応したVIEWを出力
             return View(db.Todoes.ToList());
         }
 
@@ -25,13 +33,20 @@ namespace TodoApp.Controllers
         {
             if (id == null)
             {
+                // HTTPのステータスコードを返す
+                //ヘルパークラスがないのでNEWでインスタンス化
+                //badRequest400
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            //idが一致するTodoesを検索
             Todo todo = db.Todoes.Find(id);
             if (todo == null)
             {
+                // 404ページを出力
                 return HttpNotFound();
             }
+
+            //idが一致するデータをVIEWにセット
             return View(todo);
         }
 
@@ -52,6 +67,8 @@ namespace TodoApp.Controllers
             {
                 db.Todoes.Add(todo);
                 db.SaveChanges();
+
+                //指定のアクションメソッドに処理を転送
                 return RedirectToAction("Index");
             }
 

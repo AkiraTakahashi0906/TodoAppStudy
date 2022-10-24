@@ -15,7 +15,18 @@ namespace TodoApp
 
             routes.MapRoute(
                 name: "Default",
+
+                //http://localhost:8080/Todoes/Details/3
+                //{controller}=TodoesController
+                //{action}=Details
+                //{id}=3
                 url: "{controller}/{action}/{id}",
+
+                //デフォルトページの設定
+                //http://localhost:8080/
+                //{controller}=TodoesController
+                //{action}=index
+                //{id}=(null)
                 defaults: new { controller = "Todoes", action = "Index", id = UrlParameter.Optional }
             );
         }
