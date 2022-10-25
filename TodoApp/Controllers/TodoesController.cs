@@ -51,24 +51,37 @@ namespace TodoApp.Controllers
         }
 
         // GET: Todoes/Create
+        //GETメソッドでリクエストがあった場合
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Todoes/Create
+        // POST: Todoes/Create　ポストリクエスト
         // 過多ポスティング攻撃を防止するには、バインド先とする特定のプロパティを有効にしてください。
         // 詳細については、https://go.microsoft.com/fwlink/?LinkId=317598 をご覧ください。
+
+        //ブラウザからPOSTリクエストがあった際に呼び出されるアクションメソッドを表すアノテーション
         [HttpPost]
+
+        //クロスサイトリクエストフォージェリ攻撃を防ぐためのアノテーション
+        //ポストれてきたトークンを自動的に検証
         [ValidateAntiForgeryToken]
+
+        //bindはPOSTされたデータをTODOモデルに紐づける
+        //CreateアクションメソッドはBINDを使わずにも書くことができる
         public ActionResult Create([Bind(Include = "Id,Summary,Detail,Limit,Done")] Todo todo)
         {
+            //入力内容が適切か返す
             if (ModelState.IsValid)
             {
+                //Add DbSetに追加
                 db.Todoes.Add(todo);
+
+                //DbSetの内容をDBに反映する
                 db.SaveChanges();
 
-                //指定のアクションメソッドに処理を転送
+                //指定のアクションメソッドに処理を転送　ヘルパメソッド
                 return RedirectToAction("Index");
             }
 
@@ -76,6 +89,7 @@ namespace TodoApp.Controllers
         }
 
         // GET: Todoes/Edit/5
+        //指定されたIDのTODOを返す
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -93,13 +107,18 @@ namespace TodoApp.Controllers
         // POST: Todoes/Edit/5
         // 過多ポスティング攻撃を防止するには、バインド先とする特定のプロパティを有効にしてください。
         // 詳細については、https://go.microsoft.com/fwlink/?LinkId=317598 をご覧ください。
+        // 入力されたデータが引数のTODOオブジェクトにバインドされる
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Summary,Detail,Limit,Done")] Todo todo)
         {
             if (ModelState.IsValid)
             {
+                //引数で受け取ったTODOをセットする
+                //Stateプロパティにモディファイドをセットすることで、該当のTODOを更新できる。
                 db.Entry(todo).State = EntityState.Modified;
+
+                //DBに反映
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -107,6 +126,7 @@ namespace TodoApp.Controllers
         }
 
         // GET: Todoes/Delete/5
+        //指定されたIDのTODO返す
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -122,6 +142,10 @@ namespace TodoApp.Controllers
         }
 
         // POST: Todoes/Delete/5
+        //指定されたIDのTODOを取得し、そのTODOをDbSetから削除
+
+        //ActionNameを指定する事でアクションメソッドの名前と、URLのメソッド部分を別のものにできる
+        //Getの時の名称と引数が同じなのでエラーになるからメソッド名を変える
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -132,6 +156,7 @@ namespace TodoApp.Controllers
             return RedirectToAction("Index");
         }
 
+        //保持しているコンテキストを開放
         protected override void Dispose(bool disposing)
         {
             if (disposing)

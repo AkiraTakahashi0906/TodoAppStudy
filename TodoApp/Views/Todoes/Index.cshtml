@@ -1,18 +1,27 @@
-﻿@model IEnumerable<TodoApp.Models.Todo>
+﻿<!-- コントローラから受け取るデータの定義　TODOクラスのリストを受け取る
+    受け取ったデータはmodelという変数に格納-->
+@model IEnumerable<TodoApp.Models.Todo>
+
 
 @{
+    <!--ViewBagはVIEWで使用するデータを保持、コントローラとVIEWの間でデータのやり取りをする際に使用-->
     ViewBag.Title = "Index";
+    <!--共通レイアウトの指定-->
     Layout = "~/Views/_LayoutPage1.cshtml";
 }
 
 <h2>Index</h2>
 
 <p>
+    <!--Html HtmlHelperと呼ばれHTMLを生成する様々なメソッドが用意されている-->
+    <!--ActionLink　リンクを生成するメソッド-->
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
+            <!--モデルの定義に応じてプロパティの表示名を出力-->
+            <!--TODOクラスのプロパティにDISPLAYNAMEを設定すると反映される-->
             @Html.DisplayNameFor(model => model.Summary)
         </th>
         <th>
@@ -27,26 +36,27 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Summary)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Detail)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Limit)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Done)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Summary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Detail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Limit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Done)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>

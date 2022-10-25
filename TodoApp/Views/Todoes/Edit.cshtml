@@ -1,4 +1,5 @@
-﻿@model TodoApp.Models.Todo
+﻿<!--一つのTODOを受け取る-->
+@model TodoApp.Models.Todo
 
 @{
     ViewBag.Title = "Edit";
@@ -7,21 +8,29 @@
 
 <h2>Edit</h2>
 
-
+<!--BeginForm　ブロック内をフォームタグで囲う-->
 @using (Html.BeginForm())
 {
+    <!--クロスサイトリクエストフォージェリ対策のHIDDENタグを埋め込む-->
+    <!--トークンが生成されてHIDDEN　TAGにセットされる-->
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Todo</h4>
         <hr />
+
+        <!--入力チェックのエラーメッセージが出力-->
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <!--HiddenTAGを生成　TODOのIDを保持している-->
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
+            <!--ラベルタグを生成　ラベルタグでくくられる-->
             @Html.LabelFor(model => model.Summary, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
+                <!--プロパティの型に応じたHTMLTAGを生成-->
                 @Html.EditorFor(model => model.Summary, new { htmlAttributes = new { @class = "form-control" } })
+                <!--各項目の入力チェックのエラーメッセージを出力-->
                 @Html.ValidationMessageFor(model => model.Summary, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -38,7 +47,7 @@
             @Html.LabelFor(model => model.Limit, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Limit, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Limit, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Limit, "TEST", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -64,6 +73,7 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
+<!--jqueryとvalidateプラグインの読み込み　入力チェックで使用されている-->
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
