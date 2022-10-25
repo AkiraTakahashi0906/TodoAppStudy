@@ -13,6 +13,7 @@ namespace TodoApp.Controllers
     //コントローラクラスを作る前にビルド
     //名前はコントローラで終わる
     //Controllerを継承
+    [Authorize]//SignIn認証された状態のみアクセス
     public class TodoesController : Controller
     {
         //データベースの操作を行う

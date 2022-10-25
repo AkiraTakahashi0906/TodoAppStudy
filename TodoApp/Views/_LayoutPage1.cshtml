@@ -7,6 +7,14 @@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <div class="container">
+        <!--Request.IsAuthenticated ログインしていればTRUEが返る-->
+        @if (Request.IsAuthenticated)
+        {
+            //SignOut アクションメソッドへのリンクを作る　第三引数にコントローラを渡すLogin
+            @Html.ActionLink("ログアウト","SignOut", new {Controller = "Login"})
+        }
+    </div>
     <!--container 左右に適切な余白設定してくれる-->
     <div class="container">
         @RenderBody()
