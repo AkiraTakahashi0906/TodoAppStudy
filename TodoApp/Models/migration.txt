@@ -1,0 +1,4 @@
+﻿nuget パッケージ マネージャー コンソール ホストのバージョン 6.2.1.2
+Enable-Migrations -EnableAutomaticMigrations
+
+Migrationsフォルダが作成される
