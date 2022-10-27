@@ -27,18 +27,11 @@
             User admin = new User()
             {
                 Id = 1,
-                UserName = "admin",
+                UserName = "administrator",
                 Password = "password",
                 Roles = new List<Role>()
             };
 
-            User akira = new User()
-            {
-                Id = 2,
-                UserName = "akira",
-                Password = "password",
-                Roles = new List<Role>()
-            };
 
             Role administrators = new Role()
             {
@@ -47,23 +40,14 @@
                 Users = new List<User>()
             };
 
-            Role users = new Role()
-            {
-                Id = 2,
-                RoleName = "Users",
-                Users = new List<User>()
-            };
 
             admin.Roles.Add(administrators);
             administrators.Users.Add(admin);
 
-            akira.Roles.Add(users);
-            users.Users.Add(akira);
-
             //AddOrUpdate 複数のユーザーをまとめて登録
             //追加する要素がなければ追加、登録されていたら更新　第一引数に渡すID
-            context.Users.AddOrUpdate(user => user.Id, new User[] { admin, akira });
-            context.Roles.AddOrUpdate(role => role.Id, new Role[] { administrators, users });
+            context.Users.AddOrUpdate(user => user.Id, new User[] { admin });
+            context.Roles.AddOrUpdate(role => role.Id, new Role[] { administrators });
         }
     }
 }
