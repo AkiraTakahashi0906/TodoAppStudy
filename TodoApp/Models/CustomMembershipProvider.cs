@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Security;
 
@@ -110,14 +111,42 @@ namespace TodoApp.Models
         {
             using(var db = new TodoesContext())
             {
+                var hash = this.GeneratePasswordHash(username, password);
                 //FirstOrDefault リストの一番先頭OR　NULLを返す
-                var user = db.Users.Where(x=>x.UserName == username && x.Password == password).FirstOrDefault();
+                var user = db.Users.Where(x=>x.UserName == username && x.Password == hash).FirstOrDefault();
                 if (user != null)
                 {
                     return true;
                 }
-                return false;
             }
+
+            //todo 後で削除
+            //if ("administrator".Equals(username) && "password".Equals(password))
+            //{
+            //    return true;
+            //}
+
+            return false;
+        }
+
+        //PBKDF2 RFC2898
+        //レインボーテーブル攻撃　ソルト　ストレッチング
+        public string GeneratePasswordHash(string username,string password)
+        {
+            //ソルトを作成
+            string rawSalt = $"secret_{username}";
+
+            //インスタンス化
+            var sha256=  new SHA256CryptoServiceProvider();
+            //バイトの配列に変換して渡す
+            var salt = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(rawSalt));
+
+            //ストレッチング10000回
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
+
+            //ハッシュを取得
+            var hash = pbkdf2.GetBytes(32);
+            return Convert.ToBase64String(hash);
         }
     }
 }

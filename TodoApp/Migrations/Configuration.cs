@@ -40,6 +40,8 @@
                 Users = new List<User>()
             };
 
+            var membershipProvider = new CustomMembershipProvider();
+            admin.Password = membershipProvider.GeneratePasswordHash(admin.UserName, admin.Password);
 
             admin.Roles.Add(administrators);
             administrators.Users.Add(admin);
