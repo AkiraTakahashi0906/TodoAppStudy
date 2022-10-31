@@ -20,10 +20,13 @@ namespace TodoApp.Models
 
         [Required] //必須項目
         [DataType(DataType.Password)]
-        [DisplayName("パスワード")]
+        
         public string Password { get; set; }
 
         //ナビゲーションプロパティにはvirtualをつける
         public virtual ICollection<Role> Roles { get; set; } //ユーザーモデルとロールモデルの関連を表すプロパティ　ナビゲーションプロパティと言う
+        [DisplayName("ロール")]
+        [NotMapped] //DBに保持する必要がないとき
+        public List<int> RoleIds { get; set; }
     }
 }
